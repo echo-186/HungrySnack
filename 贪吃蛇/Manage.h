@@ -17,7 +17,7 @@ private:
 private:
 	void FoodInMap(MapState val);
 	void SnakeInMap(MapState mapState);//通过函数减少重复代码，不需要在外部使用,如果自身的数据没有进行修改就用const
-	MapState isSnakeMove();//判断蛇能否移动
+	MapState isSnakeMove(MyPoint &pos);//判断蛇能否移动
 private://控制蛇的速度
 	float m_BeginTime;
 	float m_EndTime;
@@ -122,7 +122,7 @@ void Manage::SnakeInMap(MapState mapState)
 		temHead = temHead->pNext;
 	}
 }
-MapState Manage::isSnakeMove()
+MapState Manage::isSnakeMove(MyPoint &pos)
 {
 	SnakeNode const* temSnake = m_pSnake->GetSnakeHead();
 	MyPoint pos = temSnake->SnakePos;//得到蛇的位置，再要蛇的方向
