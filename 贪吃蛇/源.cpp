@@ -6,8 +6,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	pGame->InitGame();//³õÊ¼»¯ÓÎÏ·
 	while (true)
 	{
-		pGame->UpdateGame();
-		
+		//if(!pGame->UpdateGame())
+		//	break;//ËÀÍö
+		if (!pGame->UpdateGame())
+			pGame->InitGame();
 		pGame->DrawGame();
 		system("cls");
 	}

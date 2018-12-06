@@ -23,6 +23,8 @@ Food::Food()
 }
 void Food::InitFood(short arr[], int &len)
 {
+	memset(m_FoodArr, 0, sizeof(MyPoint)*FOOD_NUM);
+	m_FoodNum = 0;
 	for (int i = 0; i < FOOD_NUM; i++)//此方法中的食物会在地图上找到空余地方生成
 	{
 		int index = rand() % len;

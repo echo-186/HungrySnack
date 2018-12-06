@@ -6,7 +6,7 @@ public:
 	Manage();
 	~Manage();
 	void InitGame();//游戏必备，基础操作，初始化游戏，更新数据，绘制数据
-	void UpdateGame();
+	bool UpdateGame();
 	void DrawGame();
 	void GetKey();
 	
@@ -49,12 +49,13 @@ void Manage::InitGame()
 {
 	memset(m_RandArr, 0, sizeof(short)*MAP_ROW*MAP_COL);
 	m_RandArrlength = 0;
+	if(m_pMap==NULL)
 	m_pMap = new MyMap;//分配空间
 	m_pMap->InitMap(m_RandArr,m_RandArrlength);//只绘制地图，把蛇和实物映射进地图
-
+	if(m_pSnake==NULL)
 	m_pSnake = new Snake;
 	m_pSnake->InitSnake(m_RandArr, m_RandArrlength);//把蛇从地图中去掉
-	
+	if(m_pFood==NULL)
 	m_pFood = new Food;//添加食物
 	m_pFood->InitFood(m_RandArr, m_RandArrlength);
 
@@ -66,7 +67,7 @@ void Manage::DrawGame()
 {
 	m_pMap->DrawMap();
 }
-void Manage::UpdateGame()
+bool Manage::UpdateGame()
 {
 	GetKey();
 	SnakeInMap(map_null);//蛇在地图里为空
@@ -107,11 +108,15 @@ void Manage::UpdateGame()
 				m_pFood->InitFood(m_RandArr, m_RandArrlength);
 			}
 			break;
+		default:
+			return 0;//死亡
+
 		}
 		m_BeginTime = m_EndTime;
 	}
 	FoodInMap(map_food);
 	SnakeInMap(map_snake);//蛇在地图为蛇，下一步，让蛇慢一点。
+	return 1;
 }
 void Manage::FoodInMap(MapState val)
 {
@@ -148,6 +153,12 @@ MapState Manage::isSnakeMove(MyPoint &pos)
 	case s_right:
 		pos.col++;
 		break;
+	}
+	while (temSnake)
+	{
+		if (temSnake->SnakePos.col == pos.col&&temSnake->SnakePos.row == pos.row)//预判下一个位置是否为蛇
+			return map_snake;
+		temSnake = temSnake->pNext;
 	}
 		return(MapState) m_pMap->GetMapVal(pos.row,pos.col);//返回地图状态
 	

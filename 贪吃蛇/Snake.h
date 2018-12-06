@@ -60,6 +60,7 @@ void Snake::AddSnakeNode(int row, int col)
 }
 void Snake::InitSnake(short arr[], int &len)
 {
+	ClearSnake();//删除原蛇
 	m_SnakeDir = s_right;
 	//头插法
 	for (int i = 0; i <SNAKE_NUM; ++i)//头插尾插：尾插：如果数据进来是有先后顺序的，必须用尾插
