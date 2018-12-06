@@ -14,4 +14,15 @@ void DeleteArrVal(short arr[], int &len, int delVal)//Êý×éµÄÉ¾³ý
 			break;
 		}
 }
+void ChangeArrVal(short arr[], int &len, int srcVal, int destVal)
+{
+	for (int i = 0; i < len; i++)
+	{
+		if (arr[i] == destVal)
+		{
+			arr[i] = srcVal;
+			break;
+		}
+	}
+}
 

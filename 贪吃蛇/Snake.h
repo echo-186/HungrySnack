@@ -9,7 +9,7 @@ public:
 	SnakeNode const* GetSnakeHead() const { return pHead; }
 	SnakeDir GetSnakeDir() const { return m_SnakeDir; }
 	void InitSnake(short arr[],int &len);//引用，因为要改变它的值
-	void SnakeMove();//移动法则，断开尾部到前面
+	void SnakeMove(short arr[],int &len);//将地图传入，随着蛇的移动，空位在改变
 	void SetSnakeDir(SnakeDir const& dir);
 	
 	
@@ -62,12 +62,13 @@ void Snake::InitSnake(short arr[], int &len)
 		
 	}
 }
-void Snake::SnakeMove()
+void Snake::SnakeMove(short arr[],int &len)
 {
 	SnakeNode *temNode = pEnd;
 	pEnd = pEnd->pFront;
 	pEnd->pNext = NULL;
 	temNode->pFront = NULL;//做完这个后它变成了单独节点
+	int SrcVal = temNode->SnakePos.row*MAP_COL + temNode->SnakePos.col;
 	switch (m_SnakeDir)
 	{
 	case s_up:
@@ -91,7 +92,8 @@ void Snake::SnakeMove()
 	temNode->pNext = pHead;
 	pHead->pFront = temNode;
 	pHead = temNode;
-
+	int DestVal = temNode->SnakePos.row*MAP_COL + temNode->SnakePos.col;
+	ChangeArrVal(arr, len, SrcVal, DestVal);
 }
 void Snake::SetSnakeDir(SnakeDir const& dir)
 {

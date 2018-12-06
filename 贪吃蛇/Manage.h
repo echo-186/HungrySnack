@@ -95,7 +95,7 @@ void Manage::UpdateGame()
 		}
 		switch (isSnakeMove())
 		{case map_null:
-			m_pSnake->SnakeMove();
+			m_pSnake->SnakeMove(m_RandArr,m_RandArrlength);
 			break;
 		case map_food:
 			break;
