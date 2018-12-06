@@ -17,7 +17,7 @@ private:
 private:
 	void FoodInMap(MapState val);
 	void SnakeInMap(MapState mapState);//通过函数减少重复代码，不需要在外部使用,如果自身的数据没有进行修改就用const
-	MapState isSnakeMove();//判断蛇能否移动
+	MapState isSnakeMove(MyPoint &pos);//判断蛇能否移动
 private://控制蛇的速度
 	float m_BeginTime;
 	float m_EndTime;
@@ -93,11 +93,19 @@ void Manage::UpdateGame()
 				m_pSnake->SetSnakeDir(s_right);
 			break;
 		}
-		switch (isSnakeMove())
+		MyPoint temPos=m_pSnake->GetSnakeHead()->SnakePos;
+		switch (isSnakeMove(temPos))
 		{case map_null:
 			m_pSnake->SnakeMove(m_RandArr,m_RandArrlength);
 			break;
 		case map_food:
+			FoodInMap(map_null);//先把食物变空
+			m_pFood->ClearFoodNode(temPos.row, temPos.col);
+			m_pSnake->AddSnakeNode(temPos.row, temPos.col);
+			if (m_pFood->GetFoodNum() == 0)
+			{
+				m_pFood->InitFood(m_RandArr, m_RandArrlength);
+			}
 			break;
 		}
 		m_BeginTime = m_EndTime;
@@ -122,10 +130,10 @@ void Manage::SnakeInMap(MapState mapState)
 		temHead = temHead->pNext;
 	}
 }
-MapState Manage::isSnakeMove()
+MapState Manage::isSnakeMove(MyPoint &pos)
 {
 	SnakeNode const* temSnake = m_pSnake->GetSnakeHead();
-	MyPoint pos = temSnake->SnakePos;//得到蛇的位置，再要蛇的方向
+     pos = temSnake->SnakePos;//得到蛇的位置，再要蛇的方向
 	switch (m_pSnake->GetSnakeDir())//根据蛇的方向预判断下一个位置能不能走
 	{
 	case s_up:

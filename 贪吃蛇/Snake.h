@@ -8,6 +8,7 @@ public:
 	void ClearSnake();
 	SnakeNode const* GetSnakeHead() const { return pHead; }
 	SnakeDir GetSnakeDir() const { return m_SnakeDir; }
+	void AddSnakeNode(int row, int col);
 	void InitSnake(short arr[],int &len);//引用，因为要改变它的值
 	void SnakeMove(short arr[],int &len);//将地图传入，随着蛇的移动，空位在改变
 	void SetSnakeDir(SnakeDir const& dir);
@@ -38,16 +39,12 @@ void Snake::ClearSnake()//删除链表的接口
 	}
 	pEnd = NULL;
 }
-void Snake::InitSnake(short arr[], int &len)
+void Snake::AddSnakeNode(int row, int col)
 {
-	m_SnakeDir = s_right;
-	//头插法
-	for (int i = 0; i <SNAKE_NUM; ++i)//头插尾插：尾插：如果数据进来是有先后顺序的，必须用尾插
-	{
-		DeleteArrVal(arr, len, 2*MAP_COL + 3 + i);
+	//头插尾插：尾插：如果数据进来是有先后顺序的，必须用尾插
 		SnakeNode *insertNode = new SnakeNode;
-		insertNode->SnakePos.row = 2;
-		insertNode->SnakePos.col = 3 + i;
+		insertNode->SnakePos.row = row;
+		insertNode->SnakePos.col = col;
 		insertNode->pNext = pHead;
 		insertNode->pFront = NULL;
 		if (pHead)
@@ -56,10 +53,35 @@ void Snake::InitSnake(short arr[], int &len)
 
 		}
 		else
-		
+
 			pEnd = insertNode;
-			pHead = insertNode;
+		pHead = insertNode;
+
+}
+void Snake::InitSnake(short arr[], int &len)
+{
+	m_SnakeDir = s_right;
+	//头插法
+	for (int i = 0; i <SNAKE_NUM; ++i)//头插尾插：尾插：如果数据进来是有先后顺序的，必须用尾插
+	{
 		
+		DeleteArrVal(arr, len, 2*MAP_COL + 3 + i);
+		AddSnakeNode(2, 3 + i);
+	//	SnakeNode *insertNode = new SnakeNode;
+	//	insertNode->SnakePos.row = 2;
+	//	insertNode->SnakePos.col = 3 + i;
+	//	insertNode->pNext = pHead;
+	//	insertNode->pFront = NULL;
+	//	if (pHead)
+	//	{
+	//		pHead->pFront = insertNode;
+
+	//	}
+	//	else
+	//	
+	//		pEnd = insertNode;
+	//		pHead = insertNode;
+	//	
 	}
 }
 void Snake::SnakeMove(short arr[],int &len)
